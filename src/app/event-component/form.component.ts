@@ -11,8 +11,12 @@ import { CityService } from './services/city.service';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit{
-  constructor(private objEventService:EventService,private router:Router, private activatedRoute: ActivatedRoute,private cityService: CityService,){}
-
+  constructor(
+    private objEventService: EventService,
+    private cityService: CityService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) { }
   public event: Event = new Event();
   public titulo: string = 'Crear evento';
   public errores: string[] = [];
@@ -23,12 +27,18 @@ export class FormComponent implements OnInit{
   }
 
   private getEvent():void{
-    this.activatedRoute.params.subscribe(params=>{
-      let id = params['id']
-      if(id){
-        this.objEventService.getEvent(id).subscribe((event: Event)=> this.event=event)
+    this.activatedRoute.params.subscribe(params => {
+      let id = params['id'];
+      if (id) {
+          this.objEventService.getEvent(id).subscribe((event: Event | null) => {
+              if (event) {
+                  this.event = event;
+              } else {
+                  console.log(`Event with id ${id} not found.`);
+              }
+          });
       }
-    })
+  });
   }
 
   private formatDate(date: any): string {

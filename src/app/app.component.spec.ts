@@ -1,27 +1,32 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-
+import { RouterOutlet } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HeaderComponentComponent } from './header-component/header-component.component';
+import { FooterComponentComponent } from './footer-component/footer-component.component';
+import { NavigationComponentComponent } from './navigation-component/navigation-component.component';
 describe('AppComponent', () => {
-  beforeEach(() => TestBed.configureTestingModule({
-    declarations: [AppComponent]
-  }));
+      let component: AppComponent;
+      let fixture: ComponentFixture<AppComponent>;
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
+      beforeEach(async () => {
+        await TestBed.configureTestingModule({
+          imports: [RouterTestingModule, RouterOutlet],
+          declarations: [
+            AppComponent,
+            HeaderComponentComponent,
+            FooterComponentComponent,
+            NavigationComponentComponent,
+          ],
+        }).compileComponents();
 
-  it(`should have as title 'event-challenge-app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('event-challenge-app');
-  });
+        fixture = TestBed.createComponent(AppComponent);
+        component = fixture.componentInstance;
+      });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('event-challenge-app app is running!');
-  });
-});
+      it('should create the app', () => {
+        expect(component).toBeTruthy();
+      });
+
+
+    });

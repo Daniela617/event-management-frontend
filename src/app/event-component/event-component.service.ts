@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { of } from 'rxjs';
 import { Event } from './event-component';
-import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { HttpClient,HttpErrorResponse,HttpHeaders } from '@angular/common/http';
 import Swal from 'sweetalert2';
 
 @Injectable()
@@ -15,8 +15,15 @@ export class EventService {
     return this.http.get<Event[]>(this.urlEndPoint);
   }
 
-  getEvent(id:number):Observable<Event>{
-    return this.http.get<Event>(`${this.urlEndPoint}/${id}`)
+  getEvent(id:number):Observable<Event | null>{
+    return this.http.get<Event>(`${this.urlEndPoint}/${id}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          return of(null);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   createEvent(event: Event) : Observable<Event> {

@@ -10,14 +10,21 @@ import Swal from 'sweetalert2';
 })
 export class EventComponentComponent implements OnInit{
   public eventsList: Event[]= [];
+  errorMessage: string = '';
   constructor(private objEventService:EventService,private router:Router) { }
   ngOnInit(): void {
     this.getEvents();
   }
 
-  getEvents(){
+  getEvents():void{
     this.objEventService.getEvents().subscribe(
-      eventsList => this.eventsList = eventsList
+      eventsList => {
+        this.eventsList = eventsList;
+        this.errorMessage = '';
+      },
+      error => {
+        this.errorMessage = 'Error fetching events. Please try again.'; // Asegúrate de que este mensaje coincida con el test
+      }
     );
   }
 
@@ -55,7 +62,12 @@ export class EventComponentComponent implements OnInit{
               'Evento eliminado!',
               `Evento ${event.title} eliminado con éxito`,
               'success'
-            )
+            );
+            this.errorMessage = '';
+          },
+          error => {
+            this.errorMessage = 'Error deleting event. Please try again.'; // Establece el mensaje de error
+            Swal.fire('Error', 'No se pudo eliminar el evento.', 'error');
           }
         )
       }

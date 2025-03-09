@@ -15,6 +15,9 @@ export class EventService {
     return this.http.get<Event[]>(this.urlEndPoint);
   }
 
+  getEvent(id:number):Observable<Event>{
+    return this.http.get<Event>(`${this.urlEndPoint}/${id}`)
+  }
 
   createEvent(event: Event) : Observable<Event> {
 
@@ -35,7 +38,7 @@ export class EventService {
 
   editEvent(event: Event) : Observable<Event> {
 
-    return this.http.post<Event>(this.urlEndPoint, event, {headers: this.httpHeaders}).pipe(
+    return this.http.put<Event>(`${this.urlEndPoint}/${event.id}`, event, {headers: this.httpHeaders}).pipe(
     catchError(
       e => {
 
@@ -43,15 +46,26 @@ export class EventService {
           return throwError(e);
         }
         console.log(e.error.mensaje);
-        Swal.fire('Error, Create event', e.error.mensaje, 'error');
+        Swal.fire('Error, No se pudo editar el evento', e.error.mensaje, 'error');
         return throwError(e);
     })
     );
 
   }
-  deleteEvent(id: number) : boolean {
+  deleteEvent(id: number) : Observable<Event> {
 
-    return false;
+    return this.http.delete<Event>(`${this.urlEndPoint}/${id}`, {headers: this.httpHeaders}).pipe(
+      catchError(
+        e => {
+
+          if (e.status == 400) {
+            return throwError(e);
+          }
+          console.log(e.error.mensaje);
+          Swal.fire('Error, No se pudo eliminar el evento', e.error.mensaje, 'error');
+          return throwError(e);
+      })
+      );
 
   }
 }

@@ -46,7 +46,9 @@
       <!-- Botones de acción -->
       <div class="d-flex justify-content-center mt-4">
         <button class="btn btn-secondary px-4 py-2 mx-2" role="button" (click)="goBack()">🔙 Regresar</button>
-        <button class="btn btn-success px-4 py-2 mx-2" role="button" (click)="createEvent()">✅ Crear</button>
+        <button class="btn btn-success px-4 py-2 mx-2" role="button" (click)="createEvent()" *ngIf="!event.id else elseBlock">✅ Crear</button>
+        <ng-template #elseBlock ><button class="btn btn-success px-4 py-2 mx-2" role="button" (click)="updateEvent()"> Editar </button></ng-template>
+
       </div>
     </form>
   </div>

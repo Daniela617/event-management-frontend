@@ -6,7 +6,8 @@ import { EventComponentComponent } from './event-component/event-component.compo
 const routes: Routes = [
   {path: '', redirectTo: '/events', pathMatch: 'full'},
   {path: 'events', component: EventComponentComponent},
-  {path: 'event/form', component: FormComponent}
+  {path: 'event/form', component: FormComponent},
+  {path: 'event/form/:id', component: FormComponent}
 ];
 
 @NgModule({

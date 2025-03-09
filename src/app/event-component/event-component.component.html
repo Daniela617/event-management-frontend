@@ -6,7 +6,7 @@
 
     <!-- Mensaje cuando no hay eventos -->
     <div *ngIf="eventsList.length === 0" class="alert alert-warning text-center fw-bold">
-      ⚠ <strong>No hay eventos disponibles en la base de datos.</strong>
+      ⚠ <strong>No hay eventos disponibles.</strong>
     </div>
 
     <!-- Tabla de eventos -->
@@ -34,7 +34,7 @@
               </button>
             </td>
             <td class="p-3">
-              <button class="btn btn-danger btn-sm mx-1" (click)="deleteEvent(event.id)">
+              <button class="btn btn-danger btn-sm mx-1" (click)="deleteEvent(event)">
                 <i class="bi bi-trash"></i>
               </button>
             </td>
@@ -43,7 +43,7 @@
       </table>
     </div>
 
-    <!-- Botón para crear evento -->
+
     <div class="text-start mt-3">
       <button class="btn btn-success btn-lg rounded-pill px-4 fw-bold shadow" type="button" (click)="createEvent()">
          Crear Evento

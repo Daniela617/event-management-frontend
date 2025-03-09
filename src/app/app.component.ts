@@ -7,4 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'event-challenge-app';
+  nombre:string = 'Gestión de eventos';
+
 }

@@ -1,0 +1,53 @@
+<ul class="alert alert-danger" *ngIf="errores.length > 0">
+  <li *ngFor="let err of errores">⚠ {{ err }}</li>
+</ul>
+
+<div class="card shadow-lg p-4 bg-light text-dark mt-5 rounded">
+  <div class="card-header bg-dark text-white text-center fw-bold">
+    {{ titulo }}
+  </div>
+  <div class="card-body">
+    <form #eventForm="ngForm">
+      <div class="mb-3">
+        <label for="title" class="form-label fw-semibold">Título:</label>
+        <input type="text" class="form-control" name="title" [(ngModel)]="event.title" required minlength="4" placeholder="Ingrese el título" #title="ngModel">
+        <div *ngIf="title.invalid && (title.dirty || title.touched)" class="text-danger small mt-1">
+          <div *ngIf="title.errors?.['required']">⚠ El título es requerido</div>
+          <div *ngIf="title.errors?.['minlength']">⚠ Debe tener al menos 4 caracteres</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="dateTime" class="form-label fw-semibold">Fecha y hora:</label>
+        <input type="datetime-local" class="form-control" name="dateTime" [(ngModel)]="event.dateTime" required #dateTime="ngModel">
+        <div *ngIf="dateTime.invalid && (dateTime.dirty || dateTime.touched)" class="text-danger small mt-1">
+          <div *ngIf="dateTime.errors?.['required']">⚠ La fecha y hora son requeridas</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="description" class="form-label fw-semibold">Descripción:</label>
+        <textarea class="form-control" rows="3" name="description" [(ngModel)]="event.description" placeholder="Ingrese la descripción" required minlength="5" #description="ngModel"></textarea>
+        <div *ngIf="description.invalid && (description.dirty || description.touched)" class="text-danger small mt-1">
+          <div *ngIf="description.errors?.['required']">⚠ La descripción es requerida</div>
+          <div *ngIf="description.errors?.['minlength']">⚠ Debe tener al menos 5 caracteres</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label fw-semibold">Ubicación:</label>
+        <input type="text" class="form-control" name="location" [(ngModel)]="event.location" placeholder="Ingrese la ubicación" required minlength="5" #location="ngModel">
+        <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger small mt-1">
+          <div *ngIf="location.errors?.['required']">⚠ La ubicación es requerida</div>
+          <div *ngIf="location.errors?.['minlength']">⚠ Debe tener al menos 5 caracteres</div>
+        </div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div class="d-flex justify-content-center mt-4">
+        <button class="btn btn-secondary px-4 py-2 mx-2" role="button" (click)="goBack()">🔙 Regresar</button>
+        <button class="btn btn-success px-4 py-2 mx-2" role="button" (click)="createEvent()">✅ Crear</button>
+      </div>
+    </form>
+  </div>
+</div>

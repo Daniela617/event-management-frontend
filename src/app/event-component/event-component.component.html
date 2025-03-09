@@ -1,0 +1,53 @@
+<div class="card text-white bg-primary shadow-lg mb-4 mt-4 rounded-3">
+  <div class="card-header text-center fw-bold">
+    <h4 class="mb-0">📅 Eventos Disponibles</h4>
+  </div>
+  <div class="card-body bg-light text-dark p-4 rounded-bottom">
+
+    <!-- Mensaje cuando no hay eventos -->
+    <div *ngIf="eventsList.length === 0" class="alert alert-warning text-center fw-bold">
+      ⚠ <strong>No hay eventos disponibles en la base de datos.</strong>
+    </div>
+
+    <!-- Tabla de eventos -->
+    <div class="table-responsive" *ngIf="eventsList.length > 0">
+      <table class="table table-hover text-center align-middle">
+        <thead class="bg-dark text-white">
+          <tr>
+            <th class="p-3">Título</th>
+            <th class="p-3">Fecha y Hora</th>
+            <th class="p-3">Descripción</th>
+            <th class="p-3">Ubicación</th>
+            <th class="p-3">Editar</th>
+            <th class="p-3">Eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of eventsList" class="table-light">
+            <td class="p-3 fw-semibold">{{ event.title }}</td>
+            <td class="p-3">{{ event.dateTime | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td class="p-3">{{ event.description }}</td>
+            <td class="p-3">{{ event.location }}</td>
+            <td class="p-3">
+              <button class="btn btn-warning btn-sm mx-1" (click)="editEvent(event)">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+            </td>
+            <td class="p-3">
+              <button class="btn btn-danger btn-sm mx-1" (click)="deleteEvent(event.id)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Botón para crear evento -->
+    <div class="text-start mt-3">
+      <button class="btn btn-success btn-lg rounded-pill px-4 fw-bold shadow" type="button" (click)="createEvent()">
+         Crear Evento
+      </button>
+    </div>
+  </div>
+</div>

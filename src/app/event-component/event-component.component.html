@@ -4,12 +4,10 @@
   </div>
   <div class="card-body bg-light text-dark p-4 rounded-bottom">
 
-    <!-- Mensaje cuando no hay eventos -->
     <div *ngIf="eventsList.length === 0" class="alert alert-warning text-center fw-bold">
       ⚠ <strong>No hay eventos disponibles.</strong>
     </div>
 
-    <!-- Tabla de eventos -->
     <div class="table-responsive" *ngIf="eventsList.length > 0">
       <table class="table table-hover text-center align-middle">
         <thead class="bg-dark text-white">

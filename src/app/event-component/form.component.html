@@ -36,14 +36,15 @@
 
       <div class="mb-3">
         <label for="location" class="form-label fw-semibold">Ubicación:</label>
-        <input type="text" class="form-control" name="location" [(ngModel)]="event.location" placeholder="Ingrese la ubicación" required minlength="5" #location="ngModel">
-        <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger small mt-1">
+        <select class="form-control" name="location" [(ngModel)]="event.location" required #location="ngModel">
+          <option value="" disabled selected>Seleccione una ciudad</option>
+          <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+        </select>        <div *ngIf="location.invalid && (location.dirty || location.touched)" class="text-danger small mt-1">
           <div *ngIf="location.errors?.['required']">⚠ La ubicación es requerida</div>
           <div *ngIf="location.errors?.['minlength']">⚠ Debe tener al menos 5 caracteres</div>
         </div>
       </div>
 
-      <!-- Botones de acción -->
       <div class="d-flex justify-content-center mt-4">
         <button class="btn btn-secondary px-4 py-2 mx-2" role="button" (click)="goBack()">🔙 Regresar</button>
         <button class="btn btn-success px-4 py-2 mx-2" role="button" (click)="createEvent()" *ngIf="!event.id else elseBlock">✅ Crear</button>

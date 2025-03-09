@@ -3,19 +3,23 @@ import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EventService } from './event-component.service';
 import { Event } from './event-component';
+import { CityService } from './services/city.service';
+
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit{
-  constructor(private objEventService:EventService,private router:Router, private activatedRoute: ActivatedRoute){}
+  constructor(private objEventService:EventService,private router:Router, private activatedRoute: ActivatedRoute,private cityService: CityService,){}
 
   public event: Event = new Event();
   public titulo: string = 'Crear evento';
   public errores: string[] = [];
+  public cities: string[] = [];
   ngOnInit(): void {
     this.getEvent();
+    this.loadCities();
   }
 
   private getEvent():void{
@@ -28,7 +32,7 @@ export class FormComponent implements OnInit{
   }
 
   private formatDate(date: any): string {
-    if (!date) return ''; // Evita errores si la fecha está vacía
+    if (!date) return '';
 
     const d = new Date(date);
     return d.getFullYear() + '-' +
@@ -39,8 +43,14 @@ export class FormComponent implements OnInit{
            ('0' + d.getSeconds()).slice(-2);
   }
 
+  private loadCities(): void {
+    this.cityService.getCities().subscribe(data => {
+      this.cities = data.map(city => city.municipio);
+    });
+  }
+
   goBack(): void {
-    this.router.navigate(['/events']); // Ajusta la ruta según tu app
+    this.router.navigate(['/events']);
   }
 
   public createEvent():void{

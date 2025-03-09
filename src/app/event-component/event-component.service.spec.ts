@@ -48,6 +48,11 @@ describe('EventService', () => {
     req.flush(mockEvents);
   });
 
+  /**
+    * Given: An API with an error.
+    * When:  getEvents is called.
+    * Then:  It should handle the error and return the correct status.
+  */
   it('should handle error when retrieving events', () => {
     service.getEvents().subscribe(
       () => fail('Expected error, but got data'),
@@ -76,7 +81,11 @@ describe('EventService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(mockEvent);
   });
-
+  /**
+    * Given: An event ID that does not exist.
+    * When:  getEvent is called.
+    * Then:  It should return null.
+ */
   it('should return null when event is not found', () => {
     service.getEvent(999).subscribe(event => {
       expect(event).toBeNull();
@@ -105,7 +114,11 @@ describe('EventService', () => {
     expect(req.request.body).toEqual(newEvent);
     req.flush(newEvent);
   });
-
+  /**
+    * Given: An API with an error during event creation.
+    * When:  createEvent is called.
+    * Then:  It should handle the error and return the correct status.
+    */
   it('should handle error when creating an event', () => {
     const newEvent: Event = { id: 3, title: 'Nuevo Evento', dateTime: '2024-03-12T18:00:00', description: 'Nueva Desc', location: 'Nuevo Lugar' };
 

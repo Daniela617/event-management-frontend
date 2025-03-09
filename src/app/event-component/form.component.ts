@@ -5,27 +5,73 @@ import { EventService } from './event-component.service';
 import { Event } from './event-component';
 import { CityService } from './services/city.service';
 
+/**
+ * @class FormComponent
+ * @description Component for creating and updating events.
+ */
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit{
+
+  /**
+  * @property event
+  * @type {Event}
+  * @description The event object to be created or updated.
+  */
+  public event: Event = new Event();
+  /**
+   * @property titulo
+   * @type {string}
+   * @description The title of the form, indicating whether it's for creating or updating an event.
+   */
+  public titulo: string = 'Crear evento';
+
+  /**
+   * @property errores
+   * @type {string[]}
+   * @description Array of error messages to display to the user.
+   */
+  public errores: string[] = [];
+
+  /**
+   * @property cities
+   * @type {string[]}
+   * @description Array of city names loaded from the CityService.
+   */
+  public cities: string[] = [];
+
+  /**
+   * @constructor
+   * @param {EventService} objEventService - Service for managing events.
+   * @param {CityService} cityService - Service for managing cities.
+   * @param {Router} router - Angular's Router for navigation.
+   * @param {ActivatedRoute} activatedRoute - Angular's ActivatedRoute for accessing route parameters.
+   */
   constructor(
     private objEventService: EventService,
     private cityService: CityService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) { }
-  public event: Event = new Event();
-  public titulo: string = 'Crear evento';
-  public errores: string[] = [];
-  public cities: string[] = [];
+
+  /**
+   * @method ngOnInit
+   * @description Lifecycle hook called after data-bound properties are initialized.
+   * Fetches the event details and loads the list of cities.
+   */
   ngOnInit(): void {
     this.getEvent();
     this.loadCities();
   }
 
+  /**
+   * @private method getEvent
+   * @description Retrieves the event details from the EventService based on the route parameter 'id'.
+   * If an 'id' is present, it fetches the event; otherwise, it initializes a new event.
+   */
   private getEvent():void{
     this.activatedRoute.params.subscribe(params => {
       let id = params['id'];
@@ -41,6 +87,12 @@ export class FormComponent implements OnInit{
   });
   }
 
+  /**
+   * @private method formatDate
+   * @description Formats a date object into a string in 'YYYY-MM-DD HH:MM:SS' format.
+   * @param {any} date - The date object to format.
+   * @returns {string} The formatted date string.
+   */
   private formatDate(date: any): string {
     if (!date) return '';
 
@@ -53,16 +105,29 @@ export class FormComponent implements OnInit{
            ('0' + d.getSeconds()).slice(-2);
   }
 
+  /**
+   * @private method loadCities
+   * @description Loads the list of cities from the CityService and maps them to an array of city names.
+   */
   private loadCities(): void {
     this.cityService.getCities().subscribe(data => {
       this.cities = data.map(city => city.municipio);
     });
   }
 
+  /**
+   * @method goBack
+   * @description Navigates back to the events list.
+   */
   goBack(): void {
     this.router.navigate(['/events']);
   }
-
+  /**
+   * @method createEvent
+   * @description Creates a new event using the EventService.
+   * Formats the event's dateTime before sending it to the service.
+   * Displays a success message or error messages using SweetAlert.
+   */
   public createEvent():void{
     const formattedEvent = {
       ...this.event,
@@ -82,6 +147,11 @@ export class FormComponent implements OnInit{
     )
   }
 
+  /**
+   * @method updateEvent
+   * @description Updates an existing event using the EventService.
+   * Displays a success message or error messages using SweetAlert.
+   */
   public updateEvent():void{
     this.objEventService.editEvent(this.event).subscribe(
       event => {

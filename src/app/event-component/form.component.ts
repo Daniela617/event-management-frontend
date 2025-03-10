@@ -129,24 +129,7 @@ export class FormComponent implements OnInit{
    * Displays a success message or error messages using SweetAlert.
    */
   public createEvent():void{
-    this.errores = [];
-
-    if (!this.event.title || this.event.title.length < 4) {
-      this.errores.push("El título es obligatorio y debe tener al menos 4 caracteres.");
-    }
-
-    if (!this.event.dateTime) {
-      this.errores.push("La fecha y hora son obligatorias.");
-    }
-
-    if (!this.event.description || this.event.description.length < 5) {
-      this.errores.push("La descripción es obligatoria y debe tener al menos 5 caracteres.");
-    }
-
-    if (!this.event.location) {
-      this.errores.push("Debe seleccionar una ubicación.");
-    }
-
+    this.validateEmptyFields()
     if (this.errores.length > 0) {
       Swal.fire({
         icon: 'warning',
@@ -180,6 +163,16 @@ export class FormComponent implements OnInit{
    * Displays a success message or error messages using SweetAlert.
    */
   public updateEvent():void{
+    this.validateEmptyFields()
+    if (this.errores.length > 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        html: `<ul>Completa los campos requeridos</ul>`,
+        confirmButtonText: 'Entendido'
+      });
+      return;
+    }
     this.objEventService.editEvent(this.event).subscribe(
       event => {
         this.router.navigate(['/events']);
@@ -193,5 +186,26 @@ export class FormComponent implements OnInit{
         console.error(err.error.errors);
       }
     )
+  }
+  public validateEmptyFields():void{
+    this.errores = [];
+
+    if (!this.event.title || this.event.title.length < 4) {
+      this.errores.push("El título es obligatorio y debe tener al menos 4 caracteres.");
+    }
+
+    if (!this.event.dateTime) {
+      this.errores.push("La fecha y hora son obligatorias.");
+    }
+
+    if (!this.event.description || this.event.description.length < 5) {
+      this.errores.push("La descripción es obligatoria y debe tener al menos 5 caracteres.");
+    }
+
+    if (!this.event.location) {
+      this.errores.push("Debe seleccionar una ubicación.");
+    }
+
+
   }
 }

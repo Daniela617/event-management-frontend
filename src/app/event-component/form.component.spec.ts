@@ -61,9 +61,17 @@ describe('FormComponent', () => {
    * Then it should create a new event.
    */
   it('should create an event successfully', () => {
-    component.event = { id: 1, title: 'Test', dateTime: '2024-03-09T12:00:00Z', description: 'Desc', location: 'Loc' };
+    component.event = {
+      id:1,
+      title: 'Evento válido',
+      dateTime: "new Date()",
+      description: 'Descripción válida',
+      location: 'Ubicación válida'
+    };
+
     mockEventService.createEvent.and.returnValue(of({}));
     spyOn(Swal, 'fire');
+
     component.createEvent();
 
     expect(mockEventService.createEvent).toHaveBeenCalled();
@@ -95,6 +103,14 @@ describe('FormComponent', () => {
   it('should handle errors when creating an event', () => {
     const errorResponse = { status: 400, error: { errors: ['Error 1', 'Error 2'] } };
     mockEventService.createEvent.and.returnValue(throwError(() => errorResponse));
+
+    component.event = {
+      id: 1,
+      title: 'Evento válido',
+      dateTime: '2024-03-09T12:00:00Z',
+      description: 'Descripción válida',
+      location: 'Ubicación válida'
+    };
 
     component.createEvent();
     expect(component.errores).toEqual(['Error 1', 'Error 2']);

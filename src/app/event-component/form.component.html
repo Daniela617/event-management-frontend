@@ -1,7 +1,9 @@
-<ul class="alert alert-danger" *ngIf="errores.length > 0">
-  <li *ngFor="let err of errores">⚠ {{ err }}</li>
-</ul>
-
+<div class="mt-5"></div>
+<div *ngIf="errores.length > 0" >
+  <ul class="alert alert-danger mb-0 list-unstyled">
+    <li *ngFor="let err of errores">⚠ {{ err }}</li>
+  </ul>
+</div>
 <div class="card shadow-lg p-4 bg-light text-dark mt-5 rounded">
   <div class="card-header bg-dark text-white text-center fw-bold">
     {{ titulo }}

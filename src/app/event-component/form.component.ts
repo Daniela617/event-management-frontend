@@ -27,7 +27,7 @@ export class FormComponent implements OnInit{
    * @type {string}
    * @description The title of the form, indicating whether it's for creating or updating an event.
    */
-  public titulo: string = 'Crear evento';
+  public titulo: string = 'Formulario evento';
 
   /**
    * @property errores
@@ -129,6 +129,33 @@ export class FormComponent implements OnInit{
    * Displays a success message or error messages using SweetAlert.
    */
   public createEvent():void{
+    this.errores = [];
+
+    if (!this.event.title || this.event.title.length < 4) {
+      this.errores.push("El título es obligatorio y debe tener al menos 4 caracteres.");
+    }
+
+    if (!this.event.dateTime) {
+      this.errores.push("La fecha y hora son obligatorias.");
+    }
+
+    if (!this.event.description || this.event.description.length < 5) {
+      this.errores.push("La descripción es obligatoria y debe tener al menos 5 caracteres.");
+    }
+
+    if (!this.event.location) {
+      this.errores.push("Debe seleccionar una ubicación.");
+    }
+
+    if (this.errores.length > 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos incompletos',
+        html: `<ul>Completa los campos requeridos</ul>`,
+        confirmButtonText: 'Entendido'
+      });
+      return;
+    }
     const formattedEvent = {
       ...this.event,
       dateTime: this.formatDate(this.event.dateTime)
